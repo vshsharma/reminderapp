@@ -50,6 +50,10 @@ class _PageViewerState extends State<PageViewer>
 
   @override
   Widget build(BuildContext context) {
+    double deviceHeight(BuildContext context) =>
+        MediaQuery.of(context).size.height;
+    double deviceWidth(BuildContext context) =>
+        MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
       body: Stack(
@@ -76,8 +80,8 @@ class _PageViewerState extends State<PageViewer>
                     position: offset,
                     child: PageIndicator(controller, pageViewChild.length),
                   ),
-                  left: 120,
-                  top: 170,
+                  left: deviceWidth(context) * 0.30,
+                  top: deviceHeight(context) * 0.35,
                 )
               ],
             ),
