@@ -177,8 +177,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
             'dateTime': dateTime,
             'completed': false
           });
-          // await notificationServices.scheduleNotification(
-          //     reminder.text, dateTime);
           controller.clear();
         },
         validator: (val) {
