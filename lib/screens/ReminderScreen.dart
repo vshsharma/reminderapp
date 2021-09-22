@@ -53,17 +53,21 @@ class _ReminderScreenState extends State<ReminderScreen> {
   Widget buildTenableListTile(Todo item, int index) {
     return Dismissible(
       key: UniqueKey(),
-      direction: item.completed ? null : DismissDirection.horizontal,
+      direction: DismissDirection.horizontal,
       onDismissed: (direction) {
         setState(() {
           if (direction == DismissDirection.endToStart) {
             myTask.removeAt(index);
             fireStore.collection('todo').doc(item.id).delete();
           } else {
-            fireStore
-                .collection('todo')
-                .doc(item.id)
-                .update({'completed': true});
+            if (item.completed) {
+              print("This task is already in completed state");
+            } else {
+              fireStore
+                  .collection('todo')
+                  .doc(item.id)
+                  .update({'completed': true});
+            }
           }
         });
       },
@@ -101,6 +105,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
     );
   }
 
+  // Handle visibility of datePicker label to show datePicker view
   Visibility dateTimerPickerView(BuildContext context) {
     return Visibility(
       visible: showDateTimeField,
@@ -139,6 +144,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
     );
   }
 
+  /// Display the dateTimePicker view
   DateTimePicker dateTimePickerBuilder(BuildContext context) {
     return DateTimePicker(
         type: DateTimePickerType.dateTime,
@@ -183,6 +189,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
         });
   }
 
+  /// Get different shades of colour for different tasks
   Color getBackGroundColor(int index) {
     if (index < colorShades.length) {
       return colorShades[index];
@@ -191,6 +198,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
     }
   }
 
+  // Handle reordering of task in list
   void onReorder(int oldIndex, int newIndex) {
     setState(() {
       if (newIndex == myTask.length) {
@@ -204,6 +212,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
     });
   }
 
+  /// This method will handle the stream of tasks added from fireStore
   void getTasksStream() async {
     await for (var snapshot in fireStore.collection('todo').snapshots()) {
       myTask.clear();
