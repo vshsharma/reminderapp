@@ -95,6 +95,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
         ),
       ),
       child: Container(
+        margin: EdgeInsets.only(bottom: 0.5),
         color: item.completed ? Colors.black87 : getBackGroundColor(index),
         child: ListTile(
           enabled: !item.completed,
