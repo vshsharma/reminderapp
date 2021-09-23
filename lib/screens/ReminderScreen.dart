@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
   final List<Todo> myTask = [];
   final controller = TextEditingController();
   bool showDateTimeField = false;
+  bool showReminderView = true;
   String dateTime;
 
   @override
@@ -30,7 +33,10 @@ class _ReminderScreenState extends State<ReminderScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            createReminderContainer(),
+            Visibility(
+              visible: showReminderView,
+              child: createReminderContainer(),
+            ),
             dateTimerPickerView(context),
             Expanded(
               child: ReorderableListView(
@@ -61,7 +67,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
             fireStore.collection('todo').doc(item.id).delete();
           } else {
             if (item.completed) {
-              print("This task is already in completed state");
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Task is already completed"),
+              ));
             } else {
               fireStore
                   .collection('todo')
@@ -76,7 +84,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
         alignment: Alignment.centerLeft,
         color: Colors.green,
         child: Icon(
-          Icons.check,
+          Icons.done,
           color: Colors.white,
         ),
       ),
@@ -85,12 +93,12 @@ class _ReminderScreenState extends State<ReminderScreen> {
         alignment: Alignment.centerRight,
         color: Colors.red,
         child: Icon(
-          Icons.close,
+          Icons.delete,
           color: Colors.white,
         ),
       ),
       child: Container(
-        color: getBackGroundColor(index),
+        color: item.completed ? Colors.black87 : getBackGroundColor(index),
         child: ListTile(
           enabled: !item.completed,
           title: Text(item.title,
@@ -124,8 +132,12 @@ class _ReminderScreenState extends State<ReminderScreen> {
         style: kReminderTextStyle,
         onSubmitted: (value) {
           if (controller.text.length > 0) {
-            showDateTimeField = true;
-            setState(() {});
+            setState(() {
+              showDateTimeField = true;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Choose date and time."),
+              ));
+            });
           }
         },
         cursorHeight: kTextFieldHeight,
@@ -178,6 +190,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
             'completed': false
           });
           controller.clear();
+          //showReminderView = false;
         },
         validator: (val) {
           return null;
@@ -189,11 +202,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
   /// Get different shades of colour for different tasks
   Color getBackGroundColor(int index) {
-    if (index < colorShades.length) {
-      return colorShades[index];
-    } else {
-      return colorShades[colorShades.length - 1];
-    }
+    return colorShades[Random().nextInt(5)];
   }
 
   // Handle reordering of task in list
