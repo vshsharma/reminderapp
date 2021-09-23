@@ -33,10 +33,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Visibility(
-              visible: showReminderView,
-              child: createReminderContainer(),
-            ),
+            createReminderContainer(),
             dateTimerPickerView(context),
             Expanded(
               child: ReorderableListView(
