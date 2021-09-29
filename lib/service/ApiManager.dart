@@ -7,20 +7,22 @@ class APIManager {
 
   /// This method will handle the stream of tasks added from fireStore
   Stream<List<Todo>> getDataStream() async* {
-    todoCollection.snapshots().listen((querySnapshot) async* {
-      for (var doc in querySnapshot.docs) {
+    Stream<QuerySnapshot> stream = todoCollection.snapshots();
+    await for (QuerySnapshot snapshot in stream) {
+      myTask.clear();
+      for (var doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data();
         var fooValue = Todo(
-            id: data['id'],
+            id: doc.id,
             title: data['title'],
             completed: data['completed'],
             dateTime: data['dateTime'],
             priority: data['priority']); // <-- Retrieving the value.
         myTask.add(fooValue);
       }
+      int size = myTask.length;
       yield myTask;
-    });
-    //yield myTask;
+    }
   }
 
   Future<void> addTask(

@@ -23,9 +23,14 @@ class ReminderBloc extends BaseBloc {
   ReminderBloc() {
     _eventStream.listen((event) async {
       if (event.eventId == UserAction.Fetch) {
-        var myStream = APIManager().getDataStream();
-        myStream.listen((event) {});
-        getData();
+        Stream myStream = APIManager().getDataStream();
+        myStream.listen((snapshot) {
+          myTask.clear();
+          for (Todo todo in snapshot) {
+            myTask.add(todo);
+          }
+          sortListWithCompletedTaskAtBottom();
+        });
       } else if (event.eventId == UserAction.Add) {
         APIManager().addTask(
             message: event.title,
@@ -46,24 +51,6 @@ class ReminderBloc extends BaseBloc {
   void dispose() {
     _streamController.close();
     _eventController.close();
-  }
-
-  void getData() {
-    todoCollection.snapshots().listen((querySnapshot) {
-      myTask.clear();
-      for (var doc in querySnapshot.docs) {
-        Map<String, dynamic> data = doc.data();
-        var fooValue = Todo(
-            id: doc.id,
-            title: data['title'],
-            completed: data['completed'],
-            dateTime: data['dateTime'],
-            priority: data['priority']); // <-- Retrieving the value.
-        myTask.add(fooValue);
-        sortListWithCompletedTaskAtBottom();
-      }
-      _newsSink.add(myTask);
-    });
   }
 
   void sortListWithCompletedTaskAtBottom() {
@@ -92,6 +79,7 @@ class ReminderBloc extends BaseBloc {
       }
       return 1;
     });
+    _newsSink.add(myTask);
   }
 
   // Handle reordering of task in list
@@ -112,8 +100,7 @@ class ReminderBloc extends BaseBloc {
       eventSink.add(BlockEvent(
           eventId: UserAction.UpdatePriority, id: item.id, priority: 'Low'));
     }
-    myTask.insert(newIndex, item);
-    sortListWithCompletedTaskAtBottom();
-    _newsSink.add(myTask);
+    // myTask.insert(newIndex, item);
+    // sortListWithCompletedTaskAtBottom();
   }
 }
