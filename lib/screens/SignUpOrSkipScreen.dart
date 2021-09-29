@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/screens/ReminderScreen.dart';
+import 'package:flutter_todo/screens/MenuList.dart';
+import 'package:flutter_todo/util/CommonUtil.dart';
 import 'package:flutter_todo/util/Constants.dart';
 
-class EighthScreen extends StatelessWidget {
+class SignUpOrSkipScreen extends StatelessWidget {
   final controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -95,29 +96,15 @@ class ButtonWidget extends StatelessWidget {
         ),
         onPressed: () {
           if (buttonTitle == 'Join') {
-            bool validEmail = isEmail(controller.text);
+            bool validEmail = CommonUtil().isEmail(controller.text);
             if (!validEmail) {
+              CommonUtil().showSnackBar(context, 'email is incorrect');
               return;
             }
             controller.clear();
           }
           Navigator.of(context).pushNamedAndRemoveUntil(
-              ReminderScreen.id, (Route<dynamic> route) => false);
+              MenuList.id, (Route<dynamic> route) => false);
         });
-  }
-
-  bool isEmail(String string) {
-    // Null or empty string is invalid
-    if (string == null || string.isEmpty) {
-      return false;
-    }
-
-    const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-    final regExp = RegExp(pattern);
-
-    if (!regExp.hasMatch(string)) {
-      return false;
-    }
-    return true;
   }
 }

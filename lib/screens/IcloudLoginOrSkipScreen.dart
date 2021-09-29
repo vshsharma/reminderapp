@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/util/Constants.dart';
 
-class SeventhScreen extends StatelessWidget {
+class IcloudLoginOrSkipScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

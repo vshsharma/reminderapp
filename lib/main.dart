@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/PageViewer.dart';
-import 'package:flutter_todo/screens/FirstScreen.dart';
+import 'package:flutter_todo/screens/IntroductionScreen.dart';
+import 'package:flutter_todo/screens/MenuList.dart';
 import 'package:flutter_todo/screens/ReminderScreen.dart';
-import 'package:flutter_todo/screens/SecondScreen.dart';
+import 'package:flutter_todo/screens/SubMenuList.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: FirstScreen.id,
+      initialRoute: IntroductionScreen.id,
       routes: {
-        FirstScreen.id: (context) => FirstScreen(),
-        SecondScreen.id: (context) => SecondScreen(),
+        IntroductionScreen.id: (context) => IntroductionScreen(),
+        MenuList.id: (context) => MenuList(),
+        SubMenuList.id: (context) => SubMenuList(),
         PageViewer.id: (context) => PageViewer(),
         ReminderScreen.id: (context) => ReminderScreen(),
       },

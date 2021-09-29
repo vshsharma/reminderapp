@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/util/Constants.dart';
 
-class SixthScreen extends StatelessWidget {
+class TapOnListIntroductionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double topPadding = MediaQuery.of(context).padding.top * 5;

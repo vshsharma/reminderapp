@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/util/Constants.dart';
 
-class SecondScreen extends StatefulWidget {
-  static var id = 'SecondScreen';
+class PriorityIntroductionScreen extends StatefulWidget {
+  static var id = 'priority_introduction_screen';
 
   @override
-  _SecondScreenState createState() => _SecondScreenState();
+  _PriorityIntroductionScreenState createState() =>
+      _PriorityIntroductionScreenState();
 }
 
-class _SecondScreenState extends State<SecondScreen>
+class _PriorityIntroductionScreenState extends State<PriorityIntroductionScreen>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   Animation<Offset> offset;

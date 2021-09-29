@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/util/Constants.dart';
 
-class FifthScreen extends StatelessWidget {
+class TapAndHoldIntroductionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double topPadding = MediaQuery.of(context).padding.top * 5;
@@ -24,15 +24,21 @@ class FifthScreen extends StatelessWidget {
                   RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        text: 'Pinch together vertically ',
+                        text: 'Tap and Hold ',
                         style: kStyleBold,
                         children: <TextSpan>[
                           TextSpan(
-                              text:
-                                  'to collapse your current level and navigate up.',
-                              style: kStyleNormal),
+                              text: 'to pick an item up.', style: kStyleNormal),
                         ],
                       )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Drag it up or down to change its priority',
+                    textAlign: TextAlign.center,
+                    style: kStyleNormal,
+                  ),
                   SizedBox(
                     height: 10,
                   ),

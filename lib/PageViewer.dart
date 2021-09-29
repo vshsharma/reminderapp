@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/screens/EighthScreen.dart';
-import 'package:flutter_todo/screens/FifthScreen.dart';
-import 'package:flutter_todo/screens/FourthScreen.dart';
-import 'package:flutter_todo/screens/SecondScreen.dart';
-import 'package:flutter_todo/screens/SeventhScreen.dart';
-import 'package:flutter_todo/screens/SixthScreen.dart';
-import 'package:flutter_todo/screens/ThirdScreen.dart';
+import 'package:flutter_todo/screens/IcloudLoginOrSkipScreen.dart';
+import 'package:flutter_todo/screens/PinchTogetherIntroductionScreen.dart';
+import 'package:flutter_todo/screens/PriorityIntroductionScreen.dart';
+import 'package:flutter_todo/screens/SignUpOrSkipScreen.dart';
+import 'package:flutter_todo/screens/TapAndHoldIntroductionScreen.dart';
+import 'package:flutter_todo/screens/TapOnListIntroductionScreen.dart';
+import 'package:flutter_todo/screens/ThreeNavigationIntroductionScreen.dart';
 import 'package:flutter_todo/widget/PageIndicator.dart';
 
 class PageViewer extends StatefulWidget {
@@ -23,13 +23,13 @@ class _PageViewerState extends State<PageViewer>
   bool showPageIndicator = true;
   PageController controller = PageController();
   List<Widget> pageViewChild = [
-    SecondScreen(),
-    ThirdScreen(),
-    FourthScreen(),
-    FifthScreen(),
-    SixthScreen(),
-    SeventhScreen(),
-    EighthScreen(),
+    PriorityIntroductionScreen(),
+    TapAndHoldIntroductionScreen(),
+    ThreeNavigationIntroductionScreen(),
+    PinchTogetherIntroductionScreen(),
+    TapOnListIntroductionScreen(),
+    IcloudLoginOrSkipScreen(),
+    SignUpOrSkipScreen(),
   ];
 
   @override

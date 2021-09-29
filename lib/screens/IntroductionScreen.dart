@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/PageViewer.dart';
+import 'package:flutter_todo/screens/MenuList.dart';
+import 'package:flutter_todo/util/CommonUtil.dart';
 import 'package:flutter_todo/util/Constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'ReminderScreen.dart';
-
-class FirstScreen extends StatelessWidget {
-  static var id = 'FirstScreen';
+class IntroductionScreen extends StatelessWidget {
+  static var id = 'introduction_screen';
 
   @override
   Widget build(BuildContext context) {
-    statusNTUData(context);
+    CommonUtil().statusNTUData(context, MenuList.id);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade300,
         body: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
-            launchPageViewer(context);
+            CommonUtil().launchPageViewer(context, PageViewer.id);
           },
           onHorizontalDragUpdate: (detail) {
-            launchPageViewer(context);
+            CommonUtil().launchPageViewer(context, PageViewer.id);
           },
           child: Center(
             child: Column(
@@ -51,21 +50,5 @@ class FirstScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void launchPageViewer(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(
-        context, PageViewer.id, (Route<dynamic> route) => false);
-  }
-}
-
-///
-void statusNTUData(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getBool('ntu') != null && prefs.getBool('ntu')) {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        ReminderScreen.id, (Route<dynamic> route) => false);
-  } else {
-    await prefs.setBool('ntu', true);
   }
 }
