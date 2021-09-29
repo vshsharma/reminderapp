@@ -43,39 +43,63 @@ class _SubMenuListState extends State<SubMenuList> {
             itemCount: subMenuList.length,
             itemBuilder: (context, int index) {
               return Container(
-                color: Color(0xFF4E83EB),
-                margin: EdgeInsets.only(bottom: 1.0),
-                child: ListTile(
-                  trailing: Container(
-                    child: StreamBuilder(
-                      stream: reminderBloc.newsStream,
-                      builder: (context, snapshot) {
-                        if (snapshot != null && snapshot.hasData) {
-                          List<Todo> todoList = snapshot.data;
-                          int size = todoList.length;
-                          return Text(
-                            "$size",
-                            style: kStyleNormal.copyWith(color: Colors.white),
-                          );
-                        } else {
-                          return Text('0');
-                        }
-                      },
+                  height: 50.0,
+                  color: Color(0xFF4E83EB),
+                  margin: EdgeInsets.only(bottom: 1.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (subMenuList[index] == 'Personnel List') {
+                        CommonUtil().launchScreen(context, ReminderScreen.id);
+                      } else {
+                        CommonUtil().showSnackBar(context, 'Not available');
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Text(
+                                subMenuList[index],
+                                style: kStyleNormal.copyWith(
+                                  color: Colors.white,
+                                ),
+                              )),
+                          flex: 9,
+                        ),
+                        StreamBuilder(
+                          stream: reminderBloc.newsStream,
+                          builder: (context, snapshot) {
+                            if (snapshot != null && snapshot.hasData) {
+                              List<Todo> todoList = snapshot.data;
+                              int size = todoList.length;
+                              return Container(
+                                color: Color(0xFF6295ED),
+                                height: double.maxFinite,
+                                width: 50,
+                                alignment: Alignment.center,
+                                child: Text(index == 0 ? "$size" : "0",
+                                    style: kStyleNormal.copyWith(
+                                        color: Colors.white)),
+                              );
+                            } else {
+                              return Container(
+                                color: Color(0xFF6295ED),
+                                height: double.maxFinite,
+                                width: 50,
+                                alignment: Alignment.center,
+                                child: Text("0",
+                                    style: kStyleNormal.copyWith(
+                                        color: Colors.white)),
+                              );
+                            }
+                          },
+                        )
+                      ],
                     ),
-                  ),
-                  title: Text(
-                    subMenuList[index],
-                    style: kStyleNormal.copyWith(color: Colors.white),
-                  ),
-                  onTap: () {
-                    if (subMenuList[index] == 'Personnel List') {
-                      CommonUtil().launchScreen(context, ReminderScreen.id);
-                    } else {
-                      CommonUtil().showSnackBar(context, 'Not available');
-                    }
-                  },
-                ),
-              );
+                  ));
             }),
       ),
     );

@@ -23,7 +23,7 @@ class MenuList extends StatelessWidget {
             itemCount: menuList.length,
             itemBuilder: (context, int index) {
               return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  height: 50.0,
                   color: Color(0xFF616875),
                   margin: EdgeInsets.only(bottom: 1.0),
                   child: GestureDetector(
@@ -39,14 +39,26 @@ class MenuList extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
                               child: Text(
-                            menuList[index],
-                            style: kStyleNormal.copyWith(
-                              color: Colors.white,
-                            ),
-                          )),
-                          flex: 8,
+                                menuList[index],
+                                style: kStyleNormal.copyWith(
+                                  color: Colors.white,
+                                ),
+                              )),
+                          flex: 9,
                         ),
+                        Container(
+                          color: Color(0xFF787F8C),
+                          height: double.maxFinite,
+                          width: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            index == 0 ? "3" : "0",
+                            style: kStyleNormal.copyWith(color: Colors.white),
+                          ),
+                        )
                       ],
                     ),
                   ));

@@ -23,36 +23,55 @@ class APIManager {
     //yield myTask;
   }
 
-  Future<bool> addTask(
+  Future<void> addTask(
       {String message,
       String dateTime,
       bool completed,
       String priority}) async {
-    bool status;
-    await todoCollection
-        .add({
-          'title': message,
-          'dateTime': dateTime,
-          'completed': completed,
-          'priority': priority
-        })
-        .then((value) => status = true)
-        .catchError((error) => status = false);
-    return status;
+    try {
+      await todoCollection.add({
+        'title': message,
+        'dateTime': dateTime,
+        'completed': completed,
+        'priority': priority
+      });
+    } on FirebaseException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+    }
   }
 
   Future<void> updateTask(String id) async {
     print(id);
-    await todoCollection.doc(id).update({'completed': true});
+    try {
+      await todoCollection.doc(id).update({'completed': true});
+    } on FirebaseException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+    }
   }
 
   Future<void> updateTaskPriority(String id, String priority) async {
     print(id);
-    await todoCollection.doc(id).update({'priority': priority});
+    try {
+      await todoCollection.doc(id).update({'priority': priority}).onError(
+          (error, stackTrace) => print(error.toString()));
+    } on FirebaseException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+    }
   }
 
   Future<void> removeTask(String id) async {
     print(id);
-    await todoCollection.doc(id).delete();
+    try {
+      await todoCollection
+          .doc(id)
+          .delete()
+          .onError((error, stackTrace) => print(error.toString()));
+    } on FirebaseException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+    }
   }
 }
