@@ -7,6 +7,9 @@ class BlockEvent {
   bool completed;
   String dateTime;
   String priority;
+  String menuId;
+  String subMenuId;
+  String taskCount;
 
   BlockEvent(
       {this.eventId,
@@ -14,5 +17,8 @@ class BlockEvent {
       this.title,
       this.completed,
       this.dateTime,
-      this.priority});
+      this.priority,
+      this.menuId,
+      this.subMenuId,
+      this.taskCount});
 }

@@ -1,12 +1,19 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_todo/bloc/BaseBloc.dart';
-import 'package:flutter_todo/model/BlockEvent.dart';
-import 'package:flutter_todo/model/Todo.dart';
-import 'package:flutter_todo/service/ApiManager.dart';
+import 'package:flutter_todo/bloc/base_bloc.dart';
+import 'package:flutter_todo/model/block_event.dart';
+import 'package:flutter_todo/model/todo.dart';
+import 'package:flutter_todo/service/api_manager.dart';
 
-enum UserAction { Fetch, Add, Delete, UpdatePriority, UpdateStatus }
+enum UserAction {
+  Fetch,
+  Add,
+  Delete,
+  UpdatePriority,
+  UpdateStatus,
+  UpdateCount
+}
 
 class ReminderBloc extends BaseBloc {
   final todoCollection = FirebaseFirestore.instance.collection('todo');
@@ -43,6 +50,9 @@ class ReminderBloc extends BaseBloc {
         APIManager().updateTask(event.id);
       } else if (event.eventId == UserAction.Delete) {
         APIManager().removeTask(event.id);
+      } else if (event.eventId == UserAction.UpdateCount) {
+        APIManager().updateTaskCount(
+            event.taskCount.toString(), event.menuId, event.subMenuId);
       }
     });
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/util/Constants.dart';
+import 'package:flutter_todo/widget/outlined_button_widget.dart';
 
 class IcloudLoginOrSkipScreen extends StatelessWidget {
   @override
@@ -45,29 +46,11 @@ class IcloudLoginOrSkipScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      // todo
-                    },
-                    child: Text(
-                      'Not Now',
-                      style: kStyleNormal,
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(width: 1, color: Colors.black),
-                    ),
+                  OutlinedButtonWidget(
+                    buttonTitle: 'Not Now',
                   ),
-                  OutlinedButton(
-                    onPressed: () {
-                      // todo
-                    },
-                    child: Text(
-                      'Use iCloud',
-                      style: kStyleBold,
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(width: 1, color: Colors.black),
-                    ),
+                  OutlinedButtonWidget(
+                    buttonTitle: 'Use iCloud',
                   ),
                 ],
               )

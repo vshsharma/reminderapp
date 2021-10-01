@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/screens/MenuList.dart';
+import 'package:flutter_todo/screens/landing_screen.dart';
 import 'package:flutter_todo/util/CommonUtil.dart';
 import 'package:flutter_todo/util/Constants.dart';
+import 'package:flutter_todo/widget/button_widget.dart';
 
 class SignUpOrSkipScreen extends StatelessWidget {
   final controller = TextEditingController();
@@ -58,10 +59,25 @@ class SignUpOrSkipScreen extends StatelessWidget {
                   ButtonWidget(
                     buttonTitle: 'Skip',
                     controller: controller,
+                    onAction: (val) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          LandingScreen.id, (Route<dynamic> route) => false);
+                    },
                   ),
                   ButtonWidget(
                     buttonTitle: 'Join',
                     controller: controller,
+                    onAction: (val) {
+                      bool validEmail = CommonUtil().isEmail(controller.text);
+                      if (!validEmail) {
+                        CommonUtil()
+                            .showSnackBar(context, 'email is incorrect');
+                        return;
+                      }
+                      controller.clear();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          LandingScreen.id, (Route<dynamic> route) => false);
+                    },
                   ),
                 ],
               ),
@@ -70,41 +86,5 @@ class SignUpOrSkipScreen extends StatelessWidget {
         ),
       ),
     ));
-  }
-}
-
-class ButtonWidget extends StatelessWidget {
-  ButtonWidget({this.buttonTitle, this.controller});
-
-  final String buttonTitle;
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            onPrimary: Colors.black,
-            side: BorderSide(color: Colors.black, width: 1),
-            padding: EdgeInsets.only(
-                left: kButtonSidePadding, right: kButtonSidePadding)),
-        child: Text(
-          buttonTitle,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: kScreenTitleFont, fontWeight: FontWeight.normal),
-        ),
-        onPressed: () {
-          if (buttonTitle == 'Join') {
-            bool validEmail = CommonUtil().isEmail(controller.text);
-            if (!validEmail) {
-              CommonUtil().showSnackBar(context, 'email is incorrect');
-              return;
-            }
-            controller.clear();
-          }
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              MenuList.id, (Route<dynamic> route) => false);
-        });
   }
 }

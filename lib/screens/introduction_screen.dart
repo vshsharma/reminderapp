@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/PageViewer.dart';
-import 'package:flutter_todo/screens/MenuList.dart';
+import 'package:flutter_todo/page_viewer.dart';
+import 'package:flutter_todo/screens/landing_screen.dart';
 import 'package:flutter_todo/util/CommonUtil.dart';
 import 'package:flutter_todo/util/Constants.dart';
 
 class IntroductionScreen extends StatelessWidget {
-  static var id = 'introduction_screen';
+  static const id = 'introduction_screen';
 
   @override
   Widget build(BuildContext context) {
-    CommonUtil().statusNTUData(context, MenuList.id);
+    CommonUtil().statusNTUData(context, LandingScreen.id);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade300,

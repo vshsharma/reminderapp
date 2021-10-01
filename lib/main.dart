@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/PageViewer.dart';
-import 'package:flutter_todo/screens/IntroductionScreen.dart';
-import 'package:flutter_todo/screens/MenuList.dart';
-import 'package:flutter_todo/screens/ReminderScreen.dart';
-import 'package:flutter_todo/screens/SubMenuList.dart';
+import 'package:flutter_todo/page_viewer.dart';
+import 'package:flutter_todo/screens/introduction_screen.dart';
+import 'package:flutter_todo/screens/landing_screen.dart';
+import 'package:flutter_todo/screens/reminder_screen.dart';
+import 'package:flutter_todo/screens/task_category_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,10 +24,10 @@ class MyApp extends StatelessWidget {
       initialRoute: IntroductionScreen.id,
       routes: {
         IntroductionScreen.id: (context) => IntroductionScreen(),
-        MenuList.id: (context) => MenuList(),
-        SubMenuList.id: (context) => SubMenuList(),
+        LandingScreen.id: (context) => LandingScreen(),
+        TodoCategoryListScreen.id: (context) => TodoCategoryListScreen(''),
         PageViewer.id: (context) => PageViewer(),
-        ReminderScreen.id: (context) => ReminderScreen(),
+        ReminderScreen.id: (context) => ReminderScreen('', ''),
       },
     );
   }

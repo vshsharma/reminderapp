@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/screens/IcloudLoginOrSkipScreen.dart';
-import 'package:flutter_todo/screens/PinchTogetherIntroductionScreen.dart';
-import 'package:flutter_todo/screens/PriorityIntroductionScreen.dart';
-import 'package:flutter_todo/screens/SignUpOrSkipScreen.dart';
-import 'package:flutter_todo/screens/TapAndHoldIntroductionScreen.dart';
-import 'package:flutter_todo/screens/TapOnListIntroductionScreen.dart';
-import 'package:flutter_todo/screens/ThreeNavigationIntroductionScreen.dart';
-import 'package:flutter_todo/widget/PageIndicator.dart';
+import 'package:flutter_todo/screens/icloud_login_skip_screen.dart';
+import 'package:flutter_todo/screens/pinch_together_introduction_screen.dart';
+import 'package:flutter_todo/screens/priority_introduction_screen.dart';
+import 'package:flutter_todo/screens/sign_up_or_skip_screen.dart';
+import 'package:flutter_todo/screens/tap_and_hold_introduction_screen.dart';
+import 'package:flutter_todo/screens/tap_on_list_introduction_screen.dart';
+import 'package:flutter_todo/screens/three_navigation_introduction_screen.dart';
+import 'package:flutter_todo/widget/page_indicator.dart';
 
 class PageViewer extends StatefulWidget {
   static String id = 'PageViewer';

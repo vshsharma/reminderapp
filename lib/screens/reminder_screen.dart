@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/bloc/reminder_bloc.dart';
-import 'package:flutter_todo/model/BlockEvent.dart';
-import 'package:flutter_todo/model/Todo.dart';
+import 'package:flutter_todo/model/block_event.dart';
+import 'package:flutter_todo/model/todo.dart';
 import 'package:flutter_todo/util/CommonUtil.dart';
 import 'package:flutter_todo/util/Constants.dart';
-import 'package:flutter_todo/widget/DatePickerView.dart';
+import 'package:flutter_todo/widget/custom_error_widget.dart';
+import 'package:flutter_todo/widget/date_picker_widget.dart';
+import 'package:flutter_todo/widget/dismissible_widget.dart';
+import 'package:flutter_todo/widget/progress_indicator_widget.dart';
 
 class ReminderScreen extends StatefulWidget {
   static String id = 'reminder_screen';
+  final menuId;
+  final subMenuId;
+
+  ReminderScreen(this.menuId, this.subMenuId);
 
   @override
   _ReminderScreenState createState() => _ReminderScreenState();
@@ -45,20 +52,15 @@ class _ReminderScreenState extends State<ReminderScreen> {
                 builder: (context, snapshot) {
                   Widget widget;
                   if (!snapshot.hasData) {
-                    widget = Center(
-                      child: snapshot.hasData == null
-                          ? CircularProgressIndicator()
-                          : Text('No Data available'),
-                    );
+                    widget = ProgressIndicatorWidget();
                   }
-                  if (snapshot.hasError) {
-                    widget = Center(
-                      child: Text('Something went wrong'),
-                    );
+                  if (snapshot == null && snapshot.hasError) {
+                    widget = CustomErrorWidget();
                   }
                   if (snapshot.hasData) {
                     myTask.clear();
                     myTask.addAll(snapshot.data);
+                    updateTaskCount(myTask.length.toString());
                     widget = ReorderableListView(
                       children: getListItems(),
                       onReorder: reminderBloc.onReorder,
@@ -76,63 +78,26 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
   List<Widget> getListItems() => myTask
       .asMap()
-      .map((i, item) => MapEntry(i, buildTenableListTile(item, i)))
+      .map((i, item) => MapEntry(i, buildTenableListTile1(item, i)))
       .values
       .toList();
 
-  Widget buildTenableListTile(Todo item, int index) {
-    return Dismissible(
+  Widget buildTenableListTile1(Todo item, int index) {
+    return DismissibleWidget(
       key: UniqueKey(),
-      direction: DismissDirection.horizontal,
-      onDismissed: (direction) {
+      item: item,
+      index: index,
+      onActionChanged: (value) {
         setState(() {
-          if (direction == DismissDirection.endToStart) {
+          if (value == 'delete') {
             reminderBloc.eventSink
                 .add(BlockEvent(eventId: UserAction.Delete, id: item.id));
-          } else {
-            if (item.completed) {
-              CommonUtil().showSnackBar(context, 'Task is already completed');
-            } else {
-              reminderBloc.eventSink.add(
-                  BlockEvent(eventId: UserAction.UpdateStatus, id: item.id));
-            }
+          } else if (value == 'updateStatus') {
+            reminderBloc.eventSink
+                .add(BlockEvent(eventId: UserAction.UpdateStatus, id: item.id));
           }
         });
       },
-      background: Container(
-        padding: EdgeInsets.all(kListItemPadding),
-        alignment: Alignment.centerLeft,
-        color: Colors.green,
-        child: Icon(
-          Icons.done,
-          color: Colors.white,
-        ),
-      ),
-      secondaryBackground: Container(
-        padding: EdgeInsets.all(kListItemPadding),
-        alignment: Alignment.centerRight,
-        color: Colors.red,
-        child: Icon(
-          Icons.delete,
-          color: Colors.white,
-        ),
-      ),
-      child: Container(
-        margin: EdgeInsets.only(bottom: 0.5),
-        color: item.completed
-            ? Colors.black87
-            : CommonUtil().getBackGroundColor(item.priority),
-        child: ListTile(
-          enabled: !item.completed,
-          title: Text(item.title,
-              style:
-                  item.completed ? kTextCompletedStyle : kTextInCompletedStyle),
-          subtitle: Text(
-            item.dateTime,
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
     );
   }
 
@@ -165,9 +130,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
           if (controller.text.length > 0) {
             setState(() {
               showDateTimeField = true;
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Choose date and time."),
-              ));
+              CommonUtil().showSnackBar(context, "Choose date and time.");
             });
           }
         },
@@ -184,6 +147,17 @@ class _ReminderScreenState extends State<ReminderScreen> {
         title: controller.text,
         dateTime: dateTime,
         completed: false,
-        priority: 'Low'));
+        priority: 'Low',
+        menuId: widget.menuId,
+        subMenuId: widget.subMenuId));
+  }
+
+  void updateTaskCount(String length) {
+    reminderBloc.eventSink.add(BlockEvent(
+      eventId: UserAction.UpdateCount,
+      menuId: widget.menuId,
+      subMenuId: widget.subMenuId,
+      taskCount: length,
+    ));
   }
 }
